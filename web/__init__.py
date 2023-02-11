@@ -7,9 +7,8 @@ from flask_login import LoginManager
 app = Flask(__name__)
 
 
-app.config['SECRET_KEY']= 'ffsdfsddsbr'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
 
 
 
