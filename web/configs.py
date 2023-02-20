@@ -1,6 +1,14 @@
-from web import app
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = \
-#     "mysql://root:12345@localhost/test"
-app.config['SECRET_KEY']= 'ffsdfsddsbr'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+class Config:
+    pass
+
+
+class BaseConfig():
+    SECRET_KEY=os.getenv('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_TRACK_MODIFICATIONS=os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+    SESSION_PROTECTION = os.getenv('SESSION_PROTECTION')
