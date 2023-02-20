@@ -13,15 +13,15 @@ app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
 Migrate(app,db)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
+# login_manager = LoginManager()
+# login_manager.init_app(app)
+# login_manager.login_view = 'login'
 
-admin = Admin(app, name='就是後台', template_mode='bootstrap3',index_view=AdminIndexView(
-        name='導覽',
-        template='base_admin.html',
-        url='/admin')
-        )
+# admin = Admin(app, name='就是後台', template_mode='bootstrap3',index_view=AdminIndexView(
+#         name='導覽',
+#         template='base_admin.html',
+#         url='/admin')
+#         )
 
 # from newproject.main import main
 # app.register_blueprint(main, url_prefix='/main')
