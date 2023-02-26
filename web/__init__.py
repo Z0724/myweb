@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_admin import Admin,AdminIndexView
 from web.configs import BaseConfig
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -23,5 +24,5 @@ Migrate(app,db)
 #         url='/admin')
 #         )
 
-# from newproject.main import main
-# app.register_blueprint(main, url_prefix='/main')
+from web.blog import blog  
+app.register_blueprint(blog, url_prefix='/blog')

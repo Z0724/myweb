@@ -1,21 +1,23 @@
+from web import app, db, datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
-# class Func(db.Model):
-#     __tablename__ = 'funcs'
-#     id = db.Column(db.Integer, primary_key=True)
-#     func_module_name = db.Column(db.String(50))
-#     func_description = db.Column(db.String(100))
-#     func_is_activate = db.Column(db.Boolean, default=True)
-#     func_remark = db.Column(db.String(100))
+class User(db.Model):
+    __tablename__ = 'users'
 
-#     def __init__(self, func_module_name, func_description, func_is_activate=True, func_remark=None):
-#         self.func_module_name = func_module_name
-#         self.func_description = func_description
-#         self.func_is_activate = func_is_activate
-#         self.func_remark = func_remark
+    id       = db.Column(db.Integer, primary_key = True)
+    email    = db.Column(db.String(64),unique=True, index=True)
+    username = db.Column(db.String(64),unique=True, index=True)
+    password_hash = db.Column(db.String(128))
+    regist_date = db.Column(db.DateTime, default = datetime.utcnow())
+    last_login = db.Column(db.DateTime, default = datetime.utcnow())
 
-#     def __repr__(self):
-#         return 'id = %i, module_name = %s, is_activate = %s'
+    def __init__(self, email, username, password):
+        self.email = email
+        self.username = username
+        # 實際存入的為password_hash，而非password本身
+        self.password_hash = generate_password_hash(password)
 
-# with app.app_context():
-#     db.create_all()
+    def check_password(self, password):
+        # """檢查使用者密碼"""
+        return check_password_hash(self.password_hash, password)
