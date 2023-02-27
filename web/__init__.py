@@ -6,23 +6,28 @@ from flask_login import LoginManager
 from flask_admin import Admin,AdminIndexView
 from web.configs import BaseConfig
 from datetime import datetime
+from flask_mail import Mail
 
+db = SQLAlchemy()
+migrate = Migrate()
 
-app = Flask(__name__)
-app.config.from_object(BaseConfig)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(BaseConfig)
+    db.init_app(app)
+    migrate.init_app(app,db)
+    # loginmanager.init_app(app)
+    from web.blog import blog  
+    app.register_blueprint(blog, url_prefix='/blog')
+    return app
 
-db = SQLAlchemy(app)
-Migrate(app,db)
 
 # login_manager = LoginManager()
 # login_manager.init_app(app)
 # login_manager.login_view = 'login'
 
-# admin = Admin(app, name='就是後台', template_mode='bootstrap3',index_view=AdminIndexView(
-#         name='導覽',
-#         template='base_admin.html',
-#         url='/admin')
-#         )
+# mail = Mail()
+# admin = Admin(app, name='後台管理')
 
-from web.blog import blog  
-app.register_blueprint(blog, url_prefix='/blog')
+
+
