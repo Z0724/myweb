@@ -2,7 +2,7 @@ from flask import render_template, redirect, request, url_for, flash
 from web import create_app
 from web.model import User
 
-app = create_app()
+app = create_app('MysqlConfig')
 
 @app.route('/',methods=['POST','GET'])
 def index():
