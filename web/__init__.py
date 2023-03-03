@@ -1,18 +1,11 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from expand.other import init_other
 from flask_admin import Admin,AdminIndexView
 from web.configs import config
 from datetime import datetime
-from flask_mail import Mail
+from web.expand.other import init_other, db , migrate
 
-# 各種初始化
-db = SQLAlchemy()
-migrate = Migrate()
-# mail = Mail()
-# admin = Admin(app, name='後台管理')
+
 
 
 # 图片上传

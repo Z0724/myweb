@@ -1,8 +1,10 @@
 # 新專案
 
-調整部分HTML  
-預留擴展功能(先註解起來)  
-
+更新表單還有調整一些內容  
+MAIL相關設定  
+新問題  
+most likely due to a circular import  
+  
 網頁樣式套版(完成)  
 串接Mysql，套flask_sqlalchemy建立資料表並操作(完成)  
 設置flask_migrate，可更新資料庫並管理更新版本(完成)  

@@ -1,22 +1,26 @@
 from flask_login import LoginManager
 from web.model import User
-from .. import db
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_mail import Mail, Message
 
 login_manager = LoginManager()
 login_manager.login_view = 'login'
+# 各種初始化
+db = SQLAlchemy()
+migrate = Migrate()
+mail = Mail()
+# admin = Admin(app, name='後台管理')
 
 @login_manager.user_loader
 def load_user(user_id):
-    u = db.users.find_one({'_id':user_id})
-    if not u:
-        return None
-    return User(u)
+    return User.query.get(user_id)
 
 def init_other(app):
     # global use_cache
     # whoosh_searcher.init_app(app)
     # configure_uploads(app, upload_photos)
-    # mail.init_app(app)
+    mail.init_app(app)
     # admin.init_app(app)
     # mongo.init_app(app, "MONGO")
     # oauth.init_app(app)
