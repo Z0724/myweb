@@ -3,6 +3,8 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, Bool
 from wtforms.validators import DataRequired, Email, EqualTo, email_validator
 from wtforms import ValidationError
 from web.model import User
+from flask_pagedown.fields import PageDownField
+from flask_pagedown import PageDown
 
 # 登入
 class LoginForm(FlaskForm):
@@ -12,7 +14,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('登入')
 
 # 註冊
-class RegistrationForm(FlaskForm):
+class RegForm(FlaskForm):
     email = StringField('註冊信箱', validators=[DataRequired(), Email()])
     username = StringField('您的暱稱', validators=[DataRequired()])
     password = PasswordField('註冊密碼', validators=[DataRequired(), EqualTo('pass_confirm', message='密碼需要吻合')])
@@ -26,4 +28,7 @@ class RegistrationForm(FlaskForm):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('使用者名稱已經存在')
 
-
+# 首頁更新留言板
+class IndexMessageForm(FlaskForm):
+    mb_message = PageDownField('內容',validators=[DataRequired()])
+    submit = SubmitField('送出')

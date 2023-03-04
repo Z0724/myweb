@@ -19,7 +19,7 @@ class MysqlConfig(BaseConfig):
     MAIL_USERNAME = os.getenv('MAIL_USERNAME')
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
     MAIL_USE_TLS = os.getenv('MAIL_USE_TLS')
-    MAIL_USE_SSL = os.getenv('MAIL_USE_SSL')
+    MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
 config = {
     'MysqlConfig': MysqlConfig

@@ -1,6 +1,6 @@
 from web import db, datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from web.expand.other import login_manager
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -49,3 +49,17 @@ class R(dict): # 網頁訊息管理(存在字典內)
 
     def get_msg(self): # 取得該msg的訊息內容
         return self.get('msg')
+    
+class IndexMessageBoard(db.Model):
+    __tablename__ = 'IndexMessageBoard'
+    
+    # columns
+    mb_id       = db.Column(db.Integer, primary_key = True)
+    mb_message = db.Column(db.String(300))
+    mb_data = db.Column(db.DateTime, default=datetime.utcnow)
+    def __init__(self, mb_message):
+        self.mb_message = mb_message
+    
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)

@@ -1,8 +1,10 @@
 from flask_login import LoginManager
-from web.model import User
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail, Message
+from flask_bootstrap import Bootstrap
+
+
 
 login_manager = LoginManager()
 login_manager.login_view = 'login'
@@ -10,11 +12,10 @@ login_manager.login_view = 'login'
 db = SQLAlchemy()
 migrate = Migrate()
 mail = Mail()
+bootstrap = Bootstrap()
 # admin = Admin(app, name='後台管理')
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
+
 
 def init_other(app):
     # global use_cache
@@ -25,6 +26,7 @@ def init_other(app):
     # mongo.init_app(app, "MONGO")
     # oauth.init_app(app)
     login_manager.init_app(app)
+    bootstrap.init_app(app)
     # use_cache = app.config.get('USE_CACHE', False)
     # if use_cache:
     #     cache.init_app(app, {})

@@ -1,9 +1,8 @@
 # 新專案
 
-更新表單還有調整一些內容  
-MAIL相關設定  
-新問題  
-most likely due to a circular import  
+Mail測試完成(可寄信)  
+登入註冊頁面設置  
+Markdown跟pagedown設置(未完成)  
   
 網頁樣式套版(完成)  
 串接Mysql，套flask_sqlalchemy建立資料表並操作(完成)  

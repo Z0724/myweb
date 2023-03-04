@@ -4,8 +4,7 @@ from flask_admin import Admin,AdminIndexView
 from web.configs import config
 from datetime import datetime
 from web.expand.other import init_other, db , migrate
-
-
+from flaskext.markdown import Markdown
 
 
 # 图片上传
@@ -31,6 +30,7 @@ from web.expand.other import init_other, db , migrate
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
+    Markdown(app)
     db.init_app(app)
     migrate.init_app(app,db)
     init_other(app)

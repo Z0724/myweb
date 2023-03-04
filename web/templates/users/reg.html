@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 
-
-{% block title %}自耕碼農{% endblock %}
+{% block title %}註冊碼農{% endblock %}
 {% block page_h1 %}
         <!-- Page content-->
         <div class="container mt-5">
@@ -23,7 +23,7 @@
                         <!-- <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure> -->
                         <!-- Post content-->
                         <section class="mb-5">
-                            <p class="fs-5 mb-4">施工中</p>
+                            <p class="fs-5 mb-4">{{ wtf.quick_form(form) }}</p>
                         </section>
                     </article>
                     <!-- Comments section-->
