@@ -4,7 +4,6 @@ from wtforms.validators import DataRequired, Email, EqualTo, email_validator
 from wtforms import ValidationError
 from web.model import User
 from flask_pagedown.fields import PageDownField
-from flask_pagedown import PageDown
 
 # 登入
 class LoginForm(FlaskForm):

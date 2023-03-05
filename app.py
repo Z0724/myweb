@@ -1,17 +1,18 @@
 from flask import render_template, redirect, request, url_for, flash
-from web import create_app, db
+from web import create_app
 from web.model import User, IndexMessageBoard
 from web.form import RegForm, LoginForm, IndexMessageForm
 from flask_mail import Mail, Message
-from web.expand.other import mail
+from web.expand.other import mail, db
 from flask_login import login_user, logout_user, login_required
+from sqlalchemy import desc
 
 app = create_app('MysqlConfig')
 
 @app.route('/')
 def index():
-    posts=IndexMessageBoard.query.filter_by()
-    return render_template('n_index.html',posts=posts)
+    mb_message=db.session.query(IndexMessageBoard).order_by(desc(IndexMessageBoard.mb_id)).limit(5).all()
+    return render_template('n_index.html',mb_message=mb_message)
 
 @app.route('/post')
 def post():

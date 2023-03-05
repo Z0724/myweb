@@ -20,12 +20,12 @@
                           </p>
                           <div class="card">
                             <div class="card-header">碎碎念</div>
-                            <div class="card-body">
-                                {% for item in posts%}
-                                <p class="card-text">{{item.mb_message}}</p>
+                            <div class="card-message">
+                                {% for item in mb_message%}
+                                <p class="card-text">{% filter markdown %}{{item.mb_message}}{% endfilter %}</p>
+                                <p class="card-text">{% filter markdown %}---{% endfilter %}</p>
                                 {% endfor %}
                             </div>
-                            
                           </div>
                       </div>
                   </div>

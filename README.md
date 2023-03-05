@@ -1,8 +1,7 @@
 # 新專案
 
-Mail測試完成(可寄信)  
-登入註冊頁面設置  
-Markdown跟pagedown設置(未完成)  
+Markdown跟pagedown設置(完成)  
+碎碎念功能串接(完成)  
   
 網頁樣式套版(完成)  
 串接Mysql，套flask_sqlalchemy建立資料表並操作(完成)  

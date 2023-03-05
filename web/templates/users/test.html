@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
-{{ pagedown.include_pagedown() }}
+
 
 {% block title %}臨時用{% endblock %}
 {% block page_h1 %}
@@ -26,7 +26,13 @@
                         <!-- <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure> -->
                         <!-- Post content-->
                         <section class="mb-5">
-                            <p class="fs-5 mb-4">{{ wtf.quick_form(form) }}</p>
+                            <div class="card">
+                                <div class="card-header">發碎碎念</div>
+                                <div class="card-body">
+                                    <p class="fs-5 mb-4">{{ wtf.quick_form(form) }}</p>
+                                    {{ pagedown.include_pagedown() }}
+                                </div>
+                            </div>
                         </section>
                     </article>
                     <!-- Comments section-->

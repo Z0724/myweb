@@ -3,18 +3,21 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
+from flaskext.markdown import Markdown
+from flask_pagedown import PageDown
+from flask_admin import Admin
+from web.admin import  admin_views
+# from ..model import IndexMessageBoard
 
-
-
+# 各種初始化
 login_manager = LoginManager()
 login_manager.login_view = 'login'
-# 各種初始化
 db = SQLAlchemy()
 migrate = Migrate()
 mail = Mail()
 bootstrap = Bootstrap()
-# admin = Admin(app, name='後台管理')
-
+admin = Admin(name='後台管理')
+pagedown = PageDown()
 
 
 def init_other(app):
@@ -22,7 +25,11 @@ def init_other(app):
     # whoosh_searcher.init_app(app)
     # configure_uploads(app, upload_photos)
     mail.init_app(app)
-    # admin.init_app(app)
+    Markdown(app)
+    pagedown.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app,db)
+    admin.init_app(app)
     # mongo.init_app(app, "MONGO")
     # oauth.init_app(app)
     login_manager.init_app(app)
@@ -33,6 +40,7 @@ def init_other(app):
 
     # with app.app_context():
     #     # 添加flask-admin视图
+        # admin.add_view(admin_views.I_MessageView(IndexMessageBoard, db.session))
     #     admin.add_view(admin_view.RolesModelView(mongo.db['roles'], '角色管理'))
     #     admin.add_view(admin_view.UsersModelView(mongo.db['users'], '用户管理'))
     #     admin.add_view(admin_view.CatalogsModelView(mongo.db['catalogs'], '栏目管理', category='内容管理'))

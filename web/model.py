@@ -1,6 +1,10 @@
-from web import db, datetime
+from web import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from web.expand.other import login_manager
+from web.expand.other import db, login_manager
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -59,7 +63,3 @@ class IndexMessageBoard(db.Model):
     mb_data = db.Column(db.DateTime, default=datetime.utcnow)
     def __init__(self, mb_message):
         self.mb_message = mb_message
-    
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
