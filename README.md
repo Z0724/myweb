@@ -1,7 +1,7 @@
 # 新專案
 
-Markdown跟pagedown設置(完成)  
-碎碎念功能串接(完成)  
+理順要建立的資料表  
+解決藍圖的問題  
   
 網頁樣式套版(完成)  
 串接Mysql，套flask_sqlalchemy建立資料表並操作(完成)  

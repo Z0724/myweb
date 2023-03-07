@@ -31,17 +31,7 @@ def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     init_other(app)
-    from web.blog import blog  
+    from web.blog import blog
     app.register_blueprint(blog, url_prefix='/blog')
     return app
-
-
-
-
-
-
-
-
-
-
 

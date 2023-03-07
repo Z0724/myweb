@@ -16,7 +16,7 @@ class BaseModelView(ModelView):
 
     def is_accessible(self):
         # return True
-        return current_user.is_authenticated and (current_user.user['is_admin'] or self.permission_name in get_user_permissions(current_user.user))
+        return current_user.is_authenticated and (current_user.User['is_admin'] or self.permission_name in get_user_permissions(current_user.User))
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
