@@ -11,21 +11,33 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id       = db.Column(db.Integer, primary_key = True)
-    email    = db.Column(db.String(64),unique=True, index=True)
-    username = db.Column(db.String(64),unique=True, index=True)
-    password_hash = db.Column(db.String(128))
+    email    = db.Column(db.String(64),unique=True, index=True, nullable=False)
+    username = db.Column(db.String(64),unique=True, index=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    # is_admin = db.Column(db.Boolean, default=False)
     regist_date = db.Column(db.DateTime, default = datetime.utcnow())
     last_login = db.Column(db.DateTime, default = datetime.utcnow())
-
+    
     def __init__(self, email, username, password):
         self.email = email
         self.username = username
         # 實際存入的為password_hash，而非password本身
         self.password_hash = generate_password_hash(password)
-
+    # 檢查密碼
     def check_password(self, password):
-        # """檢查使用者密碼"""
         return check_password_hash(self.password_hash, password)
+    # 調用密碼時顯示錯誤
+    @property
+    def password(self):
+        raise AttributeError('不可讀取密碼')
+    # 修改密碼用
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+
+
+
     
 
 class R(dict): # 網頁訊息管理(存在字典內)

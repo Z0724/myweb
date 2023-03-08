@@ -26,3 +26,8 @@ class RegForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('使用者名稱已經存在')
+        
+class ArticleForm(FlaskForm):
+    title = StringField('標題', validators=[DataRequired()])
+    content = TextAreaField('內容', validators=[DataRequired()])
+    submit = SubmitField('發佈')

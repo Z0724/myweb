@@ -2,6 +2,7 @@ from flask import render_template, redirect, request, url_for, flash
 from web import create_app
 from web.model import User, IndexMessageBoard
 from web.form import  IndexMessageForm
+from web.blog.form import ArticleForm
 from flask_mail import Mail, Message
 from web.expand.other import mail, db
 from sqlalchemy import desc
@@ -16,6 +17,19 @@ def index():
 @app.route('/')
 def post():
     return render_template('blogpost.html')
+
+@app.route('/Article',methods=['POST','GET'])
+def Articless():
+    form = ArticleForm()
+    if form.validate_on_submit():
+        from web.blog.model import Article
+        Articles = Article(title=form.title.data,
+                              content=form.content.data)
+        # add to db table
+        db.session.add(Articles)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('/blog/post.html', form=form)
 
 @app.route('/test111',methods=['POST','GET'])
 def test111():
@@ -36,8 +50,8 @@ def sent_mail():
     mail.send(msg)
     return "Sent"
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 if __name__ == "__main__":
 	app.run(debug=True)
