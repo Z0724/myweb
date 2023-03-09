@@ -1,11 +1,8 @@
 {% extends 'index.html' %}
-{% import "bootstrap/wtf.html" as wtf %}
 
 
-{% block title %}臨時用{% endblock %}
+{% block title %}{{ article.title }}{% endblock %}
 {% block page_h1 %}
-
-
         <!-- Page content-->
         <div class="container mt-5">
             <div class="row">
@@ -15,24 +12,17 @@
                         <!-- Post header-->
                         <header class="mb-4">
                             <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">臨時表單</h1>
-                            <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">首頁碎碎念!</div>
+                            <h1 class="fw-bolder mb-1">{{ article.title }}</h1>
                             <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">測試用</a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">測試用</a>
+                            {% for tag in article.tags %}
+                                <a class="badge bg-secondary text-decoration-none link-light" href="#!">{{ tag.name }}</a>
+                            {% endfor %}
                         </header>
                         <!-- Preview image figure-->
                         <!-- <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure> -->
                         <!-- Post content-->
                         <section class="mb-5">
-                            <div class="card">
-                                <div class="card-header">發碎碎念</div>
-                                <div class="card-body">
-                                    <p class="fs-5 mb-4">{{ wtf.quick_form(form) }}</p>
-                                    {{ pagedown.include_pagedown() }}
-                                </div>
-                            </div>
+                            {{ article.content | markdown }}
                         </section>
                     </article>
                     <!-- Comments section-->

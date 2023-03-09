@@ -1,23 +1,35 @@
+from web.expand.other import db
+from app import app
+from web import datetime
 
 
 
-# # 建立後台權限資料表(Role)
-# class Role(db.Model):
-#     __tablename__ = 'roles'
+class Permission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    description = db.Column(db.String(255))
+    is_activate = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(64), unique=True)
-#     is_admin = db.Column(db.Boolean, default=False)
-#     users = db.relationship('User', backref='role', lazy='dynamic')
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    description = db.Column(db.String(255))
+    permissions = db.relationship('Permission', secondary='role_permission')
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
 
-#     def __repr__(self):
-#         return '<Role %r>' % self.name
-    
-# # 建立後台管理者權限資料表(Admin)
-# class Admin(db.Model):
-#     __tablename__ = 'admins'
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+role_permission = db.Table('role_permission',
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id'), primary_key=True),
+    db.Column('permission_id', db.Integer, db.ForeignKey('permission.id'), primary_key=True)
+)
 
-#     user = db.relationship('User', backref=db.backref('admin', uselist=False))
+user_role = db.Table('user_role',
+                     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                     db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
+)
+
+
+
+with app.app_context():
+    db.create_all()

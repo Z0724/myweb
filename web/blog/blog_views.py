@@ -2,13 +2,18 @@ from . import blog
 from web.blog.form import RegForm, LoginForm
 from web.model import User
 from web.expand.other import mail, db
-from flask import render_template, redirect, request, url_for, flash
+from flask import abort, render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required
+from flask_login import current_user
 
 
-@blog.route('/post')
-def post():
-    return render_template('blogpost.html')
+@blog.route('/article/<int:article_id>')
+def article(article_id):
+    from .model import Article
+    article = Article.query.get(article_id)
+    if not article:
+        abort(404)
+    return render_template('/blog/article.html', article=article)
 
 
 @blog.route('/reg',methods=['POST','GET'])
@@ -52,3 +57,22 @@ def logout():
     logout_user()
     flash("您已經登出")
     return redirect(url_for('index'))
+
+
+@blog.route('/Article',methods=['POST','GET'])
+def Articless():
+    from web.blog.form import ArticleForm
+    form = ArticleForm()
+    if form.validate_on_submit():
+        from web.blog.model import Article,Tag
+        Articles = Article(title=form.title.data,
+                              content=form.content.data,
+                              user_id=current_user.id,
+                              category_id=form.category_id.data
+                              )
+        Articles.tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
+        # add to db table
+        db.session.add(Articles)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('/blog/post.html', form=form)

@@ -6,7 +6,8 @@ from flask_bootstrap import Bootstrap
 from flaskext.markdown import Markdown
 from flask_pagedown import PageDown
 from flask_admin import Admin
-
+from flask_misaka import Misaka
+from flask_admin.contrib.sqla import ModelView
 
 
 # 各種初始化
@@ -25,7 +26,8 @@ def init_other(app):
     # whoosh_searcher.init_app(app)
     # configure_uploads(app, upload_photos)
     mail.init_app(app)
-    Markdown(app)
+    Markdown(app) # Markdown簡單版
+    Misaka(app) # Markdown進階版
     pagedown.init_app(app)
     db.init_app(app)
     migrate.init_app(app,db)

@@ -17,7 +17,9 @@ class User(db.Model, UserMixin):
     # is_admin = db.Column(db.Boolean, default=False)
     regist_date = db.Column(db.DateTime, default = datetime.utcnow())
     last_login = db.Column(db.DateTime, default = datetime.utcnow())
-    
+    # roles = db.relationship('Role', secondary='user_role', backref=db.backref('users', lazy=True))
+    # role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+
     def __init__(self, email, username, password):
         self.email = email
         self.username = username
@@ -66,7 +68,8 @@ class R(dict): # 網頁訊息管理(存在字典內)
 
     def get_msg(self): # 取得該msg的訊息內容
         return self.get('msg')
-    
+
+# 首頁碎碎念
 class IndexMessageBoard(db.Model):
     __tablename__ = 'IndexMessageBoard'
     

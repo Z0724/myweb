@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, BooleanField, validators
+from wtforms import widgets,SelectMultipleField,SelectField, StringField, PasswordField, SubmitField, TextAreaField, BooleanField, validators
 from wtforms.validators import DataRequired, Email, EqualTo, email_validator
 from wtforms import ValidationError
 from web.model import User
@@ -29,5 +29,14 @@ class RegForm(FlaskForm):
         
 class ArticleForm(FlaskForm):
     title = StringField('標題', validators=[DataRequired()])
-    content = TextAreaField('內容', validators=[DataRequired()])
+    content = TextAreaField('內容', validators=[DataRequired()], render_kw={'data-provide': 'markdown'})
+    category_id = SelectField('文章分類', coerce=int)
+    tags = SelectMultipleField('標籤', coerce=int, widget=widgets.ListWidget(prefix_label=False), option_widget=widgets.CheckboxInput())
     submit = SubmitField('發佈')
+
+    def __init__(self, *args, **kwargs):
+        super(ArticleForm, self).__init__(*args, **kwargs)
+        from web.blog.model import Category, Tag
+        self.category_id.choices =  [(b.id,  b.name)
+                            for b in Category.query.order_by().all()]
+        self.tags.choices = [(t.id, t.name) for t in Tag.query.order_by(Tag.name)]
