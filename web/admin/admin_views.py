@@ -15,26 +15,25 @@ class BaseModelView(ModelView):
     permission_name = ''
 
     def is_accessible(self):
-        # return True
-        return current_user.is_authenticated and (current_user.User['is_admin'] or self.permission_name in get_user_permissions(current_user.User))
+        return current_user.is_authenticated and (current_user.is_admin or self.permission_name in get_user_permissions(current_user))
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect(url_for('user.login', next=request.url))
+        return redirect(url_for('blog.login', next=request.url))
     
 class I_MessageForm(form.Form):
     I_Message = fields.StringField('碎碎念', validators=[DataRequired('說點話吧!')])
+    form_columns = ('mb_message',)
 
 class I_MessageView(BaseModelView):
-    column_list = ('I_Message', )
-    column_labels = dict(I_Message='碎碎念')
-    column_sortable_list = 'I_Message'
-    column_default_sort = ('I_Message', False)
+    column_list = ('mb_message',)
+    column_labels = dict(mb_message='碎碎念')
+    column_sortable_list = ('mb_message',)
+    column_default_sort = ('mb_message', False)
     can_create = True
     can_delete = True
     can_edit = True
     form = I_MessageForm
-    permission_name = 'soliloquy'
 
     def create_form(self, obj=None):
         real_form = super(I_MessageView, self).create_form(obj)

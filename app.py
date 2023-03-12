@@ -1,8 +1,7 @@
 from flask import render_template, redirect, request, url_for, flash, abort
 from web import create_app
-from web.model import User, IndexMessageBoard
+from web.model import IndexMessageBoard
 from web.form import  IndexMessageForm
-
 from flask_mail import Mail, Message
 from web.expand.other import mail, db
 from sqlalchemy import desc

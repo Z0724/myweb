@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     email    = db.Column(db.String(64),unique=True, index=True, nullable=False)
     username = db.Column(db.String(64),unique=True, index=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    # is_admin = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False)
     regist_date = db.Column(db.DateTime, default = datetime.utcnow())
     last_login = db.Column(db.DateTime, default = datetime.utcnow())
     # roles = db.relationship('Role', secondary='user_role', backref=db.backref('users', lazy=True))

@@ -1,6 +1,5 @@
 from web import datetime
 from web.expand.other import db
-from app import app
 from web.model import User
 
 
@@ -48,9 +47,3 @@ ArticleTag = db.Table('article_tag',
 
 
 
-
-
-
-
-with app.app_context():
-    db.create_all()

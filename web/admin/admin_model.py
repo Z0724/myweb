@@ -24,12 +24,8 @@ role_permission = db.Table('role_permission',
     db.Column('permission_id', db.Integer, db.ForeignKey('permission.id'), primary_key=True)
 )
 
-user_role = db.Table('user_role',
-                     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+users_role = db.Table('users_role',
+                     db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
                      db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
 )
 
-
-
-with app.app_context():
-    db.create_all()

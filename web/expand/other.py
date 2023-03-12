@@ -40,13 +40,12 @@ def init_other(app):
     # if use_cache:
     #     cache.init_app(app, {})
 
-    # with app.app_context():
+    with app.app_context():
     #     # 添加flask-admin视图
-        # from ..model import IndexMessageBoard
-        # from web.admin import admin_views
-        # from flask_admin.contrib.sqla import ModelView
-        # admin.add_view(admin_views.I_MessageView(IndexMessageBoard, db.session))
-        # admin.add_view(admin_views.BaseModelView(IndexMessageBoard, db.session))
+        from ..model import IndexMessageBoard
+        from web.admin import admin_views
+        admin.add_view(admin_views.I_MessageView(IndexMessageBoard, db.session))
+        # admin.add_view(ModelView(IndexMessageBoard, db.session))
     #     admin.add_view(admin_view.RolesModelView(mongo.db['roles'], '角色管理'))
     #     admin.add_view(admin_view.UsersModelView(mongo.db['users'], '用户管理'))
     #     admin.add_view(admin_view.CatalogsModelView(mongo.db['catalogs'], '栏目管理', category='内容管理'))
