@@ -8,18 +8,13 @@ from flask_login import current_user
 
 # 會員資料頁面
 @blog.route('/<int:user_id>')
+@login_required
 def user_home(user_id):
     user =  User.query.find_one_or_404({'_id': user_id})
     return render_template('blog/user_home.html', user=user)
 
-# 個人文章列表
-@blog.route('/posts')
-@login_required
-def user_posts():
-    return render_template('user/index.html', user_page='posts', page_name='user')
 
-
-
+# 顯示文章內容
 @blog.route('/article/<int:article_id>')
 def article(article_id):
     from .model import Article
@@ -72,7 +67,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@blog.route('/Article',methods=['POST','GET'])
+@blog.route('/Article/post',methods=['POST','GET'])
 def Articless():
     from web.blog.form import ArticleForm
     form = ArticleForm()
@@ -89,3 +84,37 @@ def Articless():
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('/blog/post.html', form=form)
+
+@blog.route('/Article/edit/<int:article_id>', methods=['GET', 'POST'])
+@login_required
+def edit_article(article_id):
+    from web.blog.form import ArticleForm
+    from web.blog.model import Article,Tag
+    article = Article.query.get_or_404(article_id)
+    form = ArticleForm(obj=article)
+    if form.validate_on_submit():
+        form.populate_obj(article)
+        article.tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
+        db.session.commit()
+        return redirect(url_for('blog.article', article_id=article.id))
+    return render_template('/blog/edit.html', form=form)
+
+@blog.route('/articles/list')
+@login_required
+def edit_list_articles():
+    from web.blog.model import Article
+    articles = Article.query.all()
+    return render_template('/blog/edit_list.html', articles=articles)
+
+
+@blog.route('/articles/delete/<int:article_id>', methods=['POST'])
+@login_required
+def delete_article(article_id):
+    from web.blog.model import Article
+    article = Article.query.get_or_404(article_id)
+    # check user's authority
+    if article.user_id != current_user.id:
+        abort(403)
+    # delete article
+    article.delete()
+    return redirect(url_for('blog.articles'))

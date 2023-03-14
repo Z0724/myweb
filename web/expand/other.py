@@ -7,6 +7,7 @@ from flaskext.markdown import Markdown
 from flask_pagedown import PageDown
 from flask_admin import Admin
 from flask_misaka import Misaka
+from flask_ckeditor import CKEditor
 
 
 # 各種初始化
@@ -18,7 +19,7 @@ mail = Mail()
 bootstrap = Bootstrap()
 admin = Admin(name='後台管理')
 pagedown = PageDown()
-
+ckeditorfield = CKEditor()
 
 def init_other(app):
     # global use_cache
@@ -31,6 +32,7 @@ def init_other(app):
     db.init_app(app)
     migrate.init_app(app,db)
     admin.init_app(app)
+    ckeditorfield.init_app(app)
     # mongo.init_app(app, "MONGO")
     # oauth.init_app(app)
     login_manager.init_app(app)
@@ -43,6 +45,7 @@ def init_other(app):
         from ..model import IndexMessageBoard, User
         from web.admin import admin_views, admin_model
         
+        admin.add_view(admin_views.backindex(name='回主頁'))
         admin.add_view(admin_views.I_MessageView(IndexMessageBoard, db.session))
         admin.add_view(admin_views.RolesModelView(admin_model.Role, db.session))
         admin.add_view(admin_views.BaseModelView(User, db.session))

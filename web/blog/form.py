@@ -4,6 +4,8 @@ from wtforms.validators import DataRequired, Email, EqualTo, email_validator
 from wtforms import ValidationError
 from web.model import User
 from flask_pagedown.fields import PageDownField
+from flask_ckeditor import CKEditorField
+
 
 # 登入
 class LoginForm(FlaskForm):
@@ -29,7 +31,7 @@ class RegForm(FlaskForm):
         
 class ArticleForm(FlaskForm):
     title = StringField('標題', validators=[DataRequired()])
-    content = TextAreaField('內容', validators=[DataRequired()], render_kw={'data-provide': 'markdown'})
+    content = CKEditorField('內容', validators=[DataRequired()], render_kw={'data-provide': 'markdown'})
     category_id = SelectField('文章分類', coerce=int)
     tags = SelectMultipleField('標籤', coerce=int, widget=widgets.ListWidget(prefix_label=False), option_widget=widgets.CheckboxInput())
     submit = SubmitField('發佈')

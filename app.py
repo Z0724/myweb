@@ -20,8 +20,6 @@ def index():
 def post():
     return render_template('blogpost.html')
 
-
-
 @app.route('/soliloquize',methods=['POST','GET'])
 def soliloquize():
     form = IndexMessageForm()

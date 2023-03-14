@@ -7,9 +7,10 @@ from flask_admin.form import Select2Widget
 from flask import redirect, url_for, request
 from wtforms import form, fields
 from wtforms.validators import DataRequired, Email
+from flask_admin import expose, BaseView
+from flask import render_template
 
 file_path = path.join(path.dirname(__file__), 'static')
-
 
 class BaseModelView(ModelView):
     permission_name = ''
@@ -20,6 +21,11 @@ class BaseModelView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
         return redirect(url_for('blog.login', next=request.url))
+    
+class backindex(BaseView):
+    @expose('/')
+    def backindex(self):
+        return redirect(url_for('index'))
     
 class I_MessageForm(form.Form):
     I_Message = fields.StringField('碎碎念', validators=[DataRequired('說點話吧!')])

@@ -27,6 +27,10 @@ class Article(db.Model):
     def __repr__(self):
         return '<Article %r>' % self.title
     
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+    
 
 # 文章分類資料表
 class Category(db.Model):
