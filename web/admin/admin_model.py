@@ -1,6 +1,5 @@
 from web.expand.other import db
-from app import app
-from web import datetime
+from datetime import datetime
 
 
 

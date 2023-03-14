@@ -8,7 +8,7 @@ def fill_form_choices(form_field, collection_name: str, db_field_name: str):
 
 def get_user_permissions(users):
     from web.expand.other import db
-    if users['is_admin']:
+    if users.is_admin:
         return set([p[0] for p in admin_permissions])
     if 'role_ids' not in users:
         return set()

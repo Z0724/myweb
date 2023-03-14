@@ -19,10 +19,9 @@
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('index') }}">首頁</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('post') }}">關於</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('blog.Articless') }}">部落格</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('soliloquize') }}">碎碎念表單(預計後台</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">預留</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">預留</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">留言板</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">文章列表</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">工具箱</a>
                 </div>
             </div>
             <!-- Page content wrapper-->
@@ -42,12 +41,16 @@
                                 <li class="nav-item"><a class="nav-link" href="{{ url_for('blog.login') }}">登入</a></li>
                                 {% endif %}
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">預留下拉</a>
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">會員專區</a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#!">下拉1</a>
-                                        <a class="dropdown-item" href="#!">下拉2</a>
+                                        <a class="dropdown-item" href="#!">會員資料</a>
+                                        <a class="dropdown-item" href="{{ url_for('soliloquize') }}">首頁碎碎念</a>
+                                        <a class="dropdown-item" href="{{ url_for('blog.Articless') }}">發文</a>
+                                        <a class="dropdown-item" href="#!">文章管理</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#!">下拉3</a>
+                                        <a class="dropdown-item" href="#!">資料庫後台</a>
+                                        <a class="dropdown-item" href="#!">權限角色管理</a>
+                                        <a class="dropdown-item" href="#!">權限管理</a>
                                     </div>
                                 </li>
                             </ul>
@@ -64,6 +67,11 @@
                     <div class="card mb-4">
                         <div class="card-header">簡介</div>
                         <div class="card-body">一分耕耘一分收獲!</div>
+                    </div>
+                    <!-- Side widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">GitHub</div>
+                        <div class="card-body">預留</div>
                     </div>
                     <!-- Search widget-->
                     <div class="card mb-4">

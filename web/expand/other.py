@@ -7,7 +7,6 @@ from flaskext.markdown import Markdown
 from flask_pagedown import PageDown
 from flask_admin import Admin
 from flask_misaka import Misaka
-from flask_admin.contrib.sqla import ModelView
 
 
 # 各種初始化
@@ -39,14 +38,16 @@ def init_other(app):
     # use_cache = app.config.get('USE_CACHE', False)
     # if use_cache:
     #     cache.init_app(app, {})
-
     with app.app_context():
     #     # 添加flask-admin视图
-        from ..model import IndexMessageBoard
-        from web.admin import admin_views
+        from ..model import IndexMessageBoard, User
+        from web.admin import admin_views, admin_model
+        
         admin.add_view(admin_views.I_MessageView(IndexMessageBoard, db.session))
-        # admin.add_view(ModelView(IndexMessageBoard, db.session))
-    #     admin.add_view(admin_view.RolesModelView(mongo.db['roles'], '角色管理'))
+        admin.add_view(admin_views.RolesModelView(admin_model.Role, db.session))
+        admin.add_view(admin_views.BaseModelView(User, db.session))
+        admin.add_view(admin_views.BaseModelView(admin_model.Permission, db.session))
+
     #     admin.add_view(admin_view.UsersModelView(mongo.db['users'], '用户管理'))
     #     admin.add_view(admin_view.CatalogsModelView(mongo.db['catalogs'], '栏目管理', category='内容管理'))
     #     admin.add_view(admin_view.PostsModelView(mongo.db['posts'], '帖子管理', category='内容管理'))

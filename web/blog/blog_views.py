@@ -6,6 +6,19 @@ from flask import abort, render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required
 from flask_login import current_user
 
+# 會員資料頁面
+@blog.route('/<int:user_id>')
+def user_home(user_id):
+    user =  User.query.find_one_or_404({'_id': user_id})
+    return render_template('blog/user_home.html', user=user)
+
+# 個人文章列表
+@blog.route('/posts')
+@login_required
+def user_posts():
+    return render_template('user/index.html', user_page='posts', page_name='user')
+
+
 
 @blog.route('/article/<int:article_id>')
 def article(article_id):

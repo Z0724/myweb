@@ -34,6 +34,7 @@ class I_MessageView(BaseModelView):
     can_delete = True
     can_edit = True
     form = I_MessageForm
+    permission_name = 'soliloquy'
 
     def create_form(self, obj=None):
         real_form = super(I_MessageView, self).create_form(obj)
@@ -42,3 +43,32 @@ class I_MessageView(BaseModelView):
     def edit_form(self, obj=None):
         real_form = super(I_MessageView, self).edit_form(obj)
         return real_form
+
+class RolesForm(form.Form):
+    name = fields.StringField('角色名', validators=[DataRequired('角色名不能为空')])
+    permissions = fields.SelectMultipleField('权限', widget=Select2Widget(multiple=True), validators=[DataRequired('权限不能为空')])
+
+
+class RolesModelView(BaseModelView):
+    column_list = ('name', )
+    column_labels = dict(name='角色名')
+    column_sortable_list = ('name',)
+    column_default_sort = ('name', False)
+    can_create = True
+    can_delete = True
+    can_edit = True
+    form = RolesForm
+    permission_name = 'roles'
+
+    def create_form(self, obj=None):
+        real_form = super(RolesModelView, self).create_form(obj)
+        user_permissions = get_user_permissions(current_user)
+        real_form.permissions.choices = list(filter(lambda p: p[0] in user_permissions, admin_permissions))
+        return real_form
+
+    def edit_form(self, obj=None):
+        real_form = super(RolesModelView, self).edit_form(obj)
+        user_permissions = get_user_permissions(current_user)
+        real_form.permissions.choices = list(filter(lambda p: p[0] in user_permissions, admin_permissions))
+        return real_form
+
