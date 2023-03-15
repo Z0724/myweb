@@ -39,6 +39,10 @@ class Category(db.Model):
     name = db.Column(db.String(50), nullable=False)
     articles = db.relationship('Article', backref='category', lazy=True)
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 # 文章標籤資料表
 class Tag(db.Model):
     __tablename__ = 'tags'

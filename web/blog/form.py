@@ -42,3 +42,11 @@ class ArticleForm(FlaskForm):
         self.category_id.choices =  [(b.id,  b.name)
                             for b in Category.query.order_by().all()]
         self.tags.choices = [(t.id, t.name) for t in Tag.query.order_by(Tag.name)]
+
+class CategoryForm(FlaskForm):
+    name = StringField('分類名稱', validators=[DataRequired()])
+    submit = SubmitField('送出')
+
+class CategoryForm_edit(FlaskForm):
+    name = TextAreaField('分類名稱', validators=[DataRequired()])
+    submit = SubmitField('送出')
