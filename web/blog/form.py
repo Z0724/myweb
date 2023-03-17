@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import widgets,SelectMultipleField,SelectField, StringField, PasswordField, SubmitField, TextAreaField, BooleanField, validators
+from wtforms import HiddenField,widgets,SelectMultipleField,SelectField, StringField, PasswordField, SubmitField, TextAreaField, BooleanField, validators
 from wtforms.validators import DataRequired, Email, EqualTo, email_validator
 from wtforms import ValidationError
 from web.model import User
@@ -44,9 +44,15 @@ class ArticleForm(FlaskForm):
         self.tags.choices = [(t.id, t.name) for t in Tag.query.order_by(Tag.name)]
 
 class CategoryForm(FlaskForm):
+    id = HiddenField('id')
     name = StringField('分類名稱', validators=[DataRequired()])
     submit = SubmitField('送出')
 
-class CategoryForm_edit(FlaskForm):
-    name = TextAreaField('分類名稱', validators=[DataRequired()])
+class TagForm(FlaskForm):
+    id = HiddenField('id')
+    name = StringField('標籤名稱', validators=[DataRequired()])
     submit = SubmitField('送出')
+
+class CommentForm(FlaskForm):
+    content = TextAreaField('評論內容', validators=[DataRequired()])
+    submit = SubmitField('提交評論')

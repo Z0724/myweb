@@ -20,6 +20,7 @@ def index():
 def post():
     return render_template('blogpost.html')
 
+
 @app.route('/soliloquize',methods=['POST','GET'])
 def soliloquize():
     form = IndexMessageForm()
@@ -32,6 +33,14 @@ def soliloquize():
         return redirect(url_for('index'))
     return render_template('/users/soliloquize.html', form=form)
 
+@app.route('/soliloquize/list')
+@app.route('/soliloquize/list/<int:page>')
+def soliloquize_list(page=1):
+    from web.model import IndexMessageBoard
+    soliloquize_list = IndexMessageBoard.query.order_by(IndexMessageBoard.mb_data.desc()).paginate(page=page, per_page=10)
+    return render_template('/users/soliloquize_list.html',soliloquize_list=soliloquize_list)
+
+
 @app.route("/mail")
 def sent_mail():
     msg = Message('測試', sender = app.config.get('MAIL_USERNAME'), recipients = ['asd123698745tw@gmail.com'])
@@ -42,6 +51,8 @@ def sent_mail():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
+
+
 
 with app.app_context():
     db.create_all()

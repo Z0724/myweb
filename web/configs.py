@@ -9,6 +9,7 @@ class Config:
 class BaseConfig():
     SECRET_KEY=os.getenv('SECRET_KEY')
     SESSION_PROTECTION = os.getenv('SESSION_PROTECTION')
+    TIMEZONE = os.getenv('TIMEZONE')
 
 class MysqlConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI')

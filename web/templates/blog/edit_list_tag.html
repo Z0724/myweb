@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 
-{% block title %}管理文章分類{% endblock %}
+{% block title %}管理文章標籤{% endblock %}
 {% block page_h1 %}
         <!-- Page content-->
         <div class="container mt-5">
@@ -13,33 +13,33 @@
                         <!-- Post header-->
                         <header class="mb-4">
                             <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">管理文章分類</h1>
+                            <h1 class="fw-bolder mb-1">管理文章標籤</h1>
                             <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">管理文章分類!</div>
+                            <div class="text-muted fst-italic mb-2">管理文章標籤!</div>
                         </header>
                         <!-- Preview image figure-->
                         <!-- <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure> -->
                         <!-- Post content-->
                         <section class="mb-5">
                             <div class="card">
-                                <div class="card-header">分類</div>
+                                <div class="card-header">標籤</div>
                                 <div class="card-body">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>分類編號</th>
-                                                <th>分類名稱</th>
+                                                <th>標籤編號</th>
+                                                <th>標籤名稱</th>
                                                 <th>操作</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for category in categorys %}
+                                            {% for tag in tags %}
                                             <tr>
-                                                <td>{{ category.id }}</td>
-                                                <td>{{ category.name }}</td>
+                                                <td>{{ tag.id }}</td>
+                                                <td>{{ tag.name }}</td>
                                                 <td>
-                                                    <a href="{{ url_for('blog.edit_category', category_id=category.id) }}" class="btn btn-danger btn-sm">編輯</a>
-                                                    <a href="{{ url_for('blog.delete_category', category_id=category.id) }}" class="btn btn-danger btn-sm">刪除</a>
+                                                    <a href="{{ url_for('blog.edit_tag', tag_id=tag.id) }}" class="btn btn-danger btn-sm">編輯</a>
+                                                    <a href="{{ url_for('blog.delete_tag', tag_id=tag.id) }}" class="btn btn-danger btn-sm">刪除</a>
                                                 </td>
 
                                             </tr>
@@ -50,7 +50,7 @@
                                 <!-- 分頁 -->
                                 <div class="post-paginate">
                                     {% if pages.has_prev %}
-                                        <a href="{{ url_for('blog.edit_list_category', page=pages.prev_num) }}">&laquo; 上一頁</a>
+                                        <a href="{{ url_for('blog.edit_list_tag', page=pages.prev_num) }}">&laquo; 上一頁</a>
                                     {% else %}
                                         <span class="disabled">&laquo; 上一頁</span>
                                     {% endif %}
@@ -59,14 +59,14 @@
                                             {% if page == pages.page %}
                                                 <strong>{{ page }}</strong>
                                             {% else %}
-                                                <a href="{{ url_for('blog.edit_list_category', page=page) }}">{{ page }}</a>
+                                                <a href="{{ url_for('blog.edit_list_tag', page=page) }}">{{ page }}</a>
                                             {% endif %}
                                         {% else %}
                                             <span class="ellipsis">...</span>
                                         {% endif %}
                                     {% endfor %}
                                     {% if pages.has_next %}
-                                        <a href="{{ url_for('blog.edit_list_category', page=pages.next_num) }}">下一頁 &raquo;</a>
+                                        <a href="{{ url_for('blog.edit_list_tag', page=pages.next_num) }}">下一頁 &raquo;</a>
                                     {% else %}
                                         <span class="disabled">下一頁 &raquo;</span>
                                     {% endif %}
@@ -75,9 +75,10 @@
                         </section>
                         <section class="mb-5">
                             <div class="card mb-4">
-                                <div class="card-header">新增 / 編輯文章分類</div>
+                                <div class="card-header">新增 / 編輯文章標籤</div>
                                 <div class="card-body">
-                                    <form method="post" {% if form.id.data %}action="{{ url_for('blog.edit_category', category_id=form.id.data) }}"{% else %}action="{{ url_for('blog.add_category') }}"{% endif %}>                                        <!-- CSRF 欄位 -->
+                                    <form method="post" {% if form.id.data %}action="{{ url_for('blog.edit_tag', tag_id=form.id.data) }}"{% else %}action="{{ url_for('blog.add_tag') }}"{% endif %}>
+                                        <!-- CSRF 欄位 -->
                                         {{ form.hidden_tag() }}
                                         <div class="form-group">
                                             {{ form.name.label(class="form-label") }}

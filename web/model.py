@@ -38,10 +38,6 @@ class User(db.Model, UserMixin):
         self.password_hash = generate_password_hash(password)
 
 
-
-
-    
-
 class R(dict): # 網頁訊息管理(存在字典內)
 
     @staticmethod # 靜態方法，類似在類裡面放獨立函式，放一起方便歸類的概念
@@ -76,6 +72,6 @@ class IndexMessageBoard(db.Model):
     # columns
     mb_id       = db.Column(db.Integer, primary_key = True)
     mb_message = db.Column(db.String(300))
-    mb_data = db.Column(db.DateTime, default=datetime.utcnow)
+    mb_data = db.Column(db.DateTime, default=datetime.now)
     def __init__(self, mb_message):
         self.mb_message = mb_message

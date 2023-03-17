@@ -23,7 +23,7 @@ def article(article_id):
         abort(404)
     return render_template('/blog/article.html', article=article)
 
-
+# 註冊會員
 @blog.route('/reg',methods=['POST','GET'])
 def reg():
     form = RegForm()
@@ -36,7 +36,7 @@ def reg():
         flash("註冊成功")
         return redirect(url_for('blog.login'))
     return render_template('/users/reg.html', form=form)
-
+# 登入會員
 @blog.route('/login',methods=['POST','GET'])
 def login():
     form = LoginForm()
@@ -58,7 +58,7 @@ def login():
             #  如果資料庫無此帳號或密碼錯誤，就顯示錯誤訊息。
             flash('信箱或密碼錯誤')
     return render_template('/users/login.html',form=form)
-
+# 登出會員
 @blog.route('/logout',methods=['POST','GET'])
 @login_required
 def logout():
@@ -66,7 +66,7 @@ def logout():
     flash("您已經登出")
     return redirect(url_for('index'))
 
-
+# 發文
 @blog.route('/Article/post',methods=['POST','GET'])
 def Articless():
     from web.blog.form import ArticleForm
@@ -84,7 +84,7 @@ def Articless():
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('/blog/post.html', form=form)
-
+# 編輯文章
 @blog.route('/Article/edit/<int:article_id>', methods=['GET', 'POST'])
 @login_required
 def edit_article(article_id):
@@ -98,7 +98,7 @@ def edit_article(article_id):
         db.session.commit()
         return redirect(url_for('blog.article', article_id=article.id))
     return render_template('/blog/edit.html', form=form)
-
+# 刪除文章
 @blog.route('/articles/delete/<int:article_id>', methods=['POST'])
 @login_required
 def delete_article(article_id):
@@ -108,7 +108,7 @@ def delete_article(article_id):
         abort(403)
     article.delete()
     return redirect(url_for('blog.articles'))
-
+# 文章列表管理
 @blog.route('/articles/edit_list_articles')
 @blog.route('/articles/edit_list_articles/<int:page>/')
 @login_required
@@ -117,7 +117,7 @@ def edit_list_articles(page=1):
     articles = Article.query.all()
     pages=Article.query.filter_by().paginate(page=page,per_page=15)
     return render_template('/blog/edit_list.html', articles=articles,pages=pages)
-
+# 新增文章分類
 @blog.route('/categories/add', methods=['POST'])
 @login_required
 def add_category():
@@ -127,22 +127,22 @@ def add_category():
     db.session.add(category)
     db.session.commit()
     return redirect(url_for('blog.edit_list_category'))
-
+# 編輯文章分類
 @blog.route('/categories/edit/<int:category_id>', methods=['GET', 'POST'])
 @login_required
 def edit_category(category_id,page=1):
     from web.blog.model import Category
     from web.blog.form import CategoryForm
-    categorys_id = Category.query.get_or_404(category_id)
+    category = Category.query.get_or_404(category_id)
+    form = CategoryForm(obj=category)
     categorys = Category.query.all()
-    form = CategoryForm(obj=categorys_id)
     pages=Category.query.filter_by().paginate(page=page,per_page=15)
     if form.validate_on_submit():
-        form.populate_obj(categorys_id)
+        form.populate_obj(category)
         db.session.commit()
         return redirect(url_for('blog.edit_list_category'))
-    return render_template('blog/edit_list_category.html',categorys=categorys,pages=pages, form=form)
-
+    return render_template('blog/edit_list_category.html',categorys=categorys, form=form,pages=pages)
+# 刪除文章分類
 @blog.route('/articles/delete_category/<int:category_id>', methods=['GET', 'POST'])
 @login_required
 def delete_category(category_id):
@@ -150,8 +150,7 @@ def delete_category(category_id):
     categorys = Category.query.get_or_404(category_id)
     categorys.delete()
     return redirect(url_for('blog.edit_list_category'))
-
-
+# 文章分類管理
 @blog.route('/articles/edit_list_category')
 @blog.route('/articles/edit_list_category/<int:page>/')
 @login_required
@@ -162,23 +161,54 @@ def edit_list_category(page=1):
     categorys = Category.query.all()
     pages=Category.query.filter_by().paginate(page=page,per_page=15)
     return render_template('/blog/edit_list_category.html', categorys=categorys,pages=pages,form=form)
-
-
-# @blog.route('/categories/edit/<int:category_id>', methods=['GET', 'POST'])
-# @login_required
-# def edit_category(category_id, page=1):
-#     from web.blog.model import Category
-#     from web.blog.form import CategoryForm
-#     category = Category.query.get_or_404(category_id)
-#     form = CategoryForm(obj=category)
-#     form.operation.data = "edit"  # 添加一个隐藏字段，表示当前操作为编辑分类
-#     if form.validate_on_submit():
-#         if form.operation.data == "edit":  # 编辑分类
-#             form.populate_obj(category)
-#         else:  # 新增分类
-#             new_category = Category()
-#             form.populate_obj(new_category)
-#             db.session.add(new_category)
-#         db.session.commit()
-#         return redirect(url_for('blog.edit_list_category'))
-#     return render_template('blog/edit_category.html', form=form)
+# 新增文章標籤
+@blog.route('/tag/add', methods=['POST'])
+@login_required
+def add_tag():
+    from web.blog.model import Tag
+    name = request.form.get('name')
+    tag = Tag(name=name)
+    db.session.add(tag)
+    db.session.commit()
+    return redirect(url_for('blog.edit_list_tag'))
+# 編輯文章標籤
+@blog.route('/tag/edit/<int:tag_id>', methods=['GET', 'POST'])
+@login_required
+def edit_tag(tag_id,page=1):
+    from web.blog.model import Tag
+    from web.blog.form import TagForm
+    tag = Tag.query.get_or_404(tag_id)
+    form = TagForm(obj=tag)
+    tags = Tag.query.all()
+    pages=Tag.query.filter_by().paginate(page=page,per_page=15)
+    if form.validate_on_submit():
+        form.populate_obj(tag)
+        db.session.commit()
+        return redirect(url_for('blog.edit_list_tag'))
+    return render_template('blog/edit_list_tag.html',tags=tags, form=form,pages=pages)
+# 刪除文章標籤
+@blog.route('/tag/delete_tag/<int:tag_id>', methods=['GET', 'POST'])
+@login_required
+def delete_tag(tag_id):
+    from web.blog.model import Tag
+    tags = Tag.query.get_or_404(tag_id)
+    tags.delete()
+    return redirect(url_for('blog.edit_list_tag'))
+# 文章標籤管理
+@blog.route('/tag/edit_list_tag')
+@blog.route('/tag/edit_list_tag/<int:page>/')
+@login_required
+def edit_list_tag(page=1):
+    from web.blog.model import Tag
+    from web.blog.form import TagForm
+    form = TagForm()
+    tags = Tag.query.all()
+    pages=Tag.query.filter_by().paginate(page=page,per_page=15)
+    return render_template('/blog/edit_list_tag.html', tags=tags,pages=pages,form=form)
+# 文章列表
+@blog.route('/artcle_list/')
+@blog.route('/artcle_list/<int:page>')
+def artcle_list(page=1):
+    from web.blog.model import Article
+    artcle_list = Article.query.order_by(Article.created_at.desc()).paginate(page=page, per_page=10)
+    return render_template('/blog/list.html',artcle_list=artcle_list)

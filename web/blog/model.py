@@ -11,7 +11,7 @@ class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     author = db.relationship('User', backref=db.backref('articles', lazy=True))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
@@ -49,9 +49,11 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 ArticleTag = db.Table('article_tag',
     db.Column('article_id', db.Integer, db.ForeignKey('articles.id'), primary_key=True),
     db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True))
-
-
 
