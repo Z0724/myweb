@@ -9,6 +9,25 @@ from flask_admin import Admin
 from flask_misaka import Misaka
 from flask_ckeditor import CKEditor
 
+# 图片上传
+# from flask_uploads import UploadSet, configure_uploads, IMAGES, ALL
+# upload_photos = UploadSet(extensions=ALL)
+
+# Cache
+from flask_cache import Cache
+cache = Cache()
+use_cache = False
+
+# OAuth
+# from flask_oauthlib.client import OAuth
+# oauth = OAuth()
+
+from web.expand.whoosh import WhooshSearcher
+from whoosh.fields import Schema, TEXT, ID, DATETIME
+from jieba.analyse import ChineseAnalyzer
+import functools
+whoosh_searcher = WhooshSearcher()
+
 
 # 各種初始化
 login_manager = LoginManager()
@@ -21,9 +40,10 @@ admin = Admin(name='後台管理')
 pagedown = PageDown()
 ckeditorfield = CKEditor()
 
+
 def init_other(app):
-    # global use_cache
-    # whoosh_searcher.init_app(app)
+    global use_cache
+    whoosh_searcher.init_app(app)
     # configure_uploads(app, upload_photos)
     mail.init_app(app)
     Markdown(app) # Markdown簡單版
@@ -33,13 +53,12 @@ def init_other(app):
     migrate.init_app(app,db)
     admin.init_app(app)
     ckeditorfield.init_app(app)
-    # mongo.init_app(app, "MONGO")
     # oauth.init_app(app)
     login_manager.init_app(app)
     bootstrap.init_app(app)
-    # use_cache = app.config.get('USE_CACHE', False)
-    # if use_cache:
-    #     cache.init_app(app, {})
+    use_cache = app.config.get('USE_CACHE', False)
+    if use_cache:
+        cache.init_app(app, {})
     with app.app_context():
     #     # 添加flask-admin视图
         from ..model import IndexMessageBoard, User
@@ -62,18 +81,18 @@ def init_other(app):
     #     admin.add_view(admin_view.OptionsModelView(mongo.db['options'], '系统设置'))
 
     #     # 初始化Whoosh索引
-    #     chinese_analyzer = ChineseAnalyzer()
-    #     post_schema = Schema(obj_id=ID(unique=True, stored=True), title=TEXT(stored=True, analyzer=chinese_analyzer)
-    #                          , content=TEXT(stored=True, analyzer=chinese_analyzer), create_at=DATETIME(stored=True)
-    #                          , catalog_id=ID(stored=True), user_id=ID(stored=True))
-    #     whoosh_searcher.add_index('posts', post_schema)
+        chinese_analyzer = ChineseAnalyzer()
+        post_schema = Schema(id=ID(unique=True, stored=True), title=TEXT(stored=True, analyzer=chinese_analyzer)
+                             , content=TEXT(stored=True, analyzer=chinese_analyzer), create_at=DATETIME(stored=True)
+                             , user_id=ID(stored=True))
+        whoosh_searcher.add_index('posts', post_schema)
 
-    # def clear_cache(f):
-    # global use_cache
+def clear_cache(f):
+    global use_cache
 
-    # @functools.wraps(f)
-    # def decorator(*args, **kwargs):
-    #     if use_cache:
-    #         cache.clear()
-    #     return f(*args, **kwargs)
-    # return decorator
+    @functools.wraps(f)
+    def decorator(*args, **kwargs):
+        if use_cache:
+            cache.clear()
+        return f(*args, **kwargs)
+    return decorator

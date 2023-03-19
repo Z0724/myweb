@@ -21,6 +21,14 @@ class MysqlConfig(BaseConfig):
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
     MAIL_USE_TLS = os.getenv('MAIL_USE_TLS')
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
+    WHOOSH_PATH = os.path.join(os.getcwd(), 'whoosh_indexes')
+
+    USE_CACHE = True
+    # CACHE_TYPE = 'redis'
+    # CACHE_REDIS_HOST = '127.0.0.1'
+    # CACHE_REDIS_PORT = 6379
+    # CACHE_REDIS_PASSWORD = ''
+    # CACHE_REDIS_DB = '0'
 
 config = {
     'MysqlConfig': MysqlConfig
