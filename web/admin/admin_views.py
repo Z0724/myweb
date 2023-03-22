@@ -1,5 +1,5 @@
 from os import path
-from .admin_config import admin_permissions
+from .admin_config import admin_permissions, admin_permissions_choices
 from .admin_expand import fill_form_choices, get_user_permissions
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
@@ -51,13 +51,14 @@ class I_MessageView(BaseModelView):
         return real_form
 
 class RolesForm(form.Form):
-    name = fields.StringField('角色名', validators=[DataRequired('角色名不能为空')])
-    permissions = fields.SelectMultipleField('权限', widget=Select2Widget(multiple=True), validators=[DataRequired('权限不能为空')])
+    name = fields.StringField('角色名', validators=[DataRequired('角色名不能空白')])
+    description = fields.StringField('說明')
+    permissions = fields.SelectMultipleField('權限', widget=Select2Widget(multiple=True), validators=[DataRequired('权限不能为空')])
 
 
 class RolesModelView(BaseModelView):
-    column_list = ('name', )
-    column_labels = dict(name='角色名')
+    column_list = ('name', 'description', 'permissions' )
+    column_labels = dict(name='角色名', description='說明', permissions='權限')
     column_sortable_list = ('name',)
     column_default_sort = ('name', False)
     can_create = True
@@ -65,11 +66,12 @@ class RolesModelView(BaseModelView):
     can_edit = True
     form = RolesForm
     permission_name = 'roles'
+    
 
     def create_form(self, obj=None):
         real_form = super(RolesModelView, self).create_form(obj)
         user_permissions = get_user_permissions(current_user)
-        real_form.permissions.choices = list(filter(lambda p: p[0] in user_permissions, admin_permissions))
+        real_form.permissions.choices = list(filter(lambda p: p[0] in user_permissions, admin_permissions_choices))
         return real_form
 
     def edit_form(self, obj=None):

@@ -14,7 +14,7 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
     description = db.Column(db.String(255))
-    permissions = db.relationship('Permission', secondary='role_permission')
+    permissions = db.Column(db.JSON)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
 
 

@@ -5,7 +5,7 @@ from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
 from flaskext.markdown import Markdown
 from flask_pagedown import PageDown
-from flask_admin import Admin
+from flask_admin import Admin, AdminIndexView
 from flask_misaka import Misaka
 from flask_ckeditor import CKEditor
 
@@ -36,9 +36,13 @@ db = SQLAlchemy()
 migrate = Migrate()
 mail = Mail()
 bootstrap = Bootstrap()
-admin = Admin(name='後台管理')
+admin = Admin(name='後台管理',index_view=AdminIndexView(
+        name='後台首頁',
+        url='/admin'))
 pagedown = PageDown()
 ckeditorfield = CKEditor()
+
+# Flask-OAuthlib 和 Flask-Dance
 
 
 def init_other(app):

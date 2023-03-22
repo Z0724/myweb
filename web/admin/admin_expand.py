@@ -1,10 +1,9 @@
 from .admin_config import admin_permissions
 
 
-def fill_form_choices(form_field, collection_name: str, db_field_name: str):
-    from web.expand.other import db
+def fill_form_choices(form_field, collection_name: str, db_field_name: str, db):
     form_field.choices = [(str(item['_id']), item[db_field_name]) for item in db[collection_name].find()]
-
+# fill_form_choices(form.permissions, 'permission', 'name', db)
 
 def get_user_permissions(users):
     from web.expand.other import db
